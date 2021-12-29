@@ -19,21 +19,19 @@ public class Individual
     public bool alive;          // Living status.
 
     // Statistics - Brain will have these as inputs.
-    public float energy;          // Movement decreases it and regenerates with time.
-    public float hunger;          // Decreases with time, eating regenerates it. 
-    public float health;        // Decreases when hungry, increases when not hungry. 
-    public float[] perception;  // Contains distance to nearest [Predator, Prey, PreyFood]. 
+    public float energy;        // Movement decreases it and regenerates with time.
+    public float health;        // Decreases when hungry, increases when eats food.
+    public float[] perception;  // Contains distance to nearest [Predator, Prey, PreyFood].
 
     // Capabilities - Performance of actions depend on these.
     public int speed;           // Moves faster but increase energy usage.
     public int perceptionRange; // Sees further but increase energy usage.
-    public int size;            // Increases max health but increases energy usage.
+    public int size;            // Increases initial health but increases energy usage.
 
     Individual();
     
     // Brain inputs updation.
     public void updateEnergy();
-    public void updateHunger();
     public void updateHealth();
     public void updatePerception();
     
@@ -45,7 +43,6 @@ public class Individual
     
     // Helpers
     public void moveTowards(int x, int y);  // Moves n units towards (x, y). N depends on velocity and energy.
-
 
     // Methods related to the Genetic Algorithm.
     public float CalculateFitness(int index);
