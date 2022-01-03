@@ -18,10 +18,10 @@ public class Sheep: Individual {
   }
 
   public void eat() {
-    
+    health += 20;
   }
 
   public void flee() {
-    
+
   }
 }

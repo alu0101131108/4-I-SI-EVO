@@ -18,6 +18,7 @@ public class Wolf: Individual {
   }
 
   public void eat() {
+    health += 20;
 
   }
 }
