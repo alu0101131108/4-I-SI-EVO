@@ -1,22 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 
-enum Actions 
-{
-  Explore,
-  Rest,
-  Chase,    // Chase a prey (predator only). This way the wolves can decide to keep chasing a prey or stop doing it (Switching to Explore or Rest)
-  Flee      // Run from predator (prey only).
-}
 
 public class Individual
 {
-    public NeuralNetwork brain; // NN that defines behaviour by deciding actions based on inputs.
+    public NeuralNetwork brain;   // NN that defines behaviour by deciding actions based on inputs.
 
-    public float xPos;          // X Coordinate.
-    public float yPos;          // Y Coordinate.
-    public int action;          // Current state decided by the brain.
-    public bool alive;          // Living status.
+    public float xPos;            // X Coordinate.
+    public float yPos;            // Y Coordinate.
+    public int action;            // Current state decided by the brain.
+    public bool alive;            // Living status.
+    public float energyLossRate;  // Rate at which energy will be lowered.
 
     // Statistics - Brain will have these as inputs.
     public float energy;        // Movement decreases it and regenerates with time.
@@ -38,16 +32,14 @@ public class Individual
     public void updatePerception();
     
     // Cicle simulation.
-    public void explore() {           // Walks to a random position inside its range and checks for food.
+    public void explore() {           // Walks to a random position inside its range.
       Random rand = new Random(Guid.NewGuid().GetHashCode());
       moveTowards(rand.Next(xPos - perceptionRange, xPos + perceptionRange),
                   rand.Next(yPos - perceptionRange, yPos + perceptionRange));
-      eat();
     }
 
     public void rest() {              // Regenerates energy while not moving.
-      energy++;
-      health--;
+      energy += 10;
     }
 
     public void kill() {              // Kills the animal.
@@ -60,7 +52,13 @@ public class Individual
     
     // Helpers
     public void moveTowards(int x, int y) {  // Moves n units towards (x, y). N depends on velocity and energy.
-      
+      if (energy > 0) {
+        int diffX = x - xPos;
+        int diffY = y - yPos;
+        xPos += speed * diffX;
+        yPos += speed * diffY;
+        energy -= energyLossRate;
+      }
     }
 
     // Methods related to the Genetic Algorithm.

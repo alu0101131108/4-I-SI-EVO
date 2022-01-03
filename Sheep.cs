@@ -1,6 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 
+enum Actions
+{
+  Explore,
+  Rest,
+  Eat,      // Goes after a plant to eat it
+  Flee      // Run away from predator (prey only)
+}
+
 public class Sheep: Individual {
   Sheep() {
     Random rand = new Random(Guid.NewGuid().GetHashCode());
@@ -15,6 +23,8 @@ public class Sheep: Individual {
     health = size * 10;
     energy = health;
     alive = true;
+
+    energyLossRate = speed * perceptionRange * size / 50;
   }
 
   public void eat() {
