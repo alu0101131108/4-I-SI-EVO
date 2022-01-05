@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 public static class StaticMath
@@ -55,5 +55,10 @@ public static class StaticMath
     public static float Remap (float value, float from1, float to1, float from2, float to2)
     {
         return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
+    }
+
+    public static float abs (float number)
+    {
+      return number < 0 ? number * -1 : number;
     }
 }
