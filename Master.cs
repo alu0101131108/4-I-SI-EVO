@@ -19,7 +19,7 @@ public class Master : MonoBehaviour
     List<int> populationSizes = new List<int> {wolves, sheeps, plants};
     GeneticAlgorithm EVO = new GeneticAlgorithm(populationSizes, elitism, mutationRate, steps);
 
-    int generations = MENU.getInputGeneration();+
+    int generations = MENU.getInputGeneration();
 
     SimulationData data = EVO.getDataFromNextGeneration(generations);
 
