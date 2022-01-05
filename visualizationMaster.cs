@@ -77,19 +77,27 @@ public class visualizationMaster : MonoBehaviour
     public void executeTurn() {
         for (int i = 0; i < populationData.Count(); i++) {
             IndividualData data = populationData[i][actualTurn];
+            if (data.alive) {
 
-            if (data.action == 0 || data.action == 3) {
-                IndividualData dataNextTurn = populationData[i][actualTurn + 1];
+            
+                if (data.action == 0 || data.action == 3) {
+                    IndividualData dataNextTurn = populationData[i][actualTurn + 1];
 
-                Vector3 position = new Vector3(dataNextTurn.xPos, dataNextTurn.yPos, 0);
+                    Vector3 position = new Vector3(dataNextTurn.xPos, dataNextTurn.yPos, 0);
 
-                individualAndPosition indv;
+                    individualAndPosition indv;
 
-                indv.individualID = i;
-                indv.posToMove = position;
-                individualsWhoMove.Add(indv);
-                rotateToPoint(populationSpawned[i].transform, position);
-                waitUntilMove = true;
+                    indv.individualID = i;
+                    indv.posToMove = position;
+                    individualsWhoMove.Add(indv);
+                    rotateToPoint(populationSpawned[i].transform, position);
+                    waitUntilMove = true;
+                }
+            } else {
+                populationData.RemoveAt(i);
+                GameObject animal = populationSpawned[i];
+                populationSpawned.RemoveAt(i);
+                Destroy(animal);
             }
         }
     }
