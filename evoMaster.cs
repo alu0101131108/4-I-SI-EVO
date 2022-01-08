@@ -8,13 +8,8 @@ public class evoMaster : MonoBehaviour
     public visualizationMaster IU;
     public GeneticAlgorithm Simulation;
 
-<<<<<<< HEAD
-    public Button buttonFromBeginning;
-    public Button buttonFromIteration;
-=======
     public button buttonFrombeginning;
     public button buttonFromIteration;
->>>>>>> 03b3f1c... pingo
     public InputField inputIterations;
     public InputField inputGenerations;
 
@@ -33,11 +28,7 @@ public class evoMaster : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-<<<<<<< HEAD
-        Button btn = buttonFromBeginning.GetComponent<Button>();
-=======
         Button btn = buttonFrombeginning.GetComponent<Button>();
->>>>>>> 03b3f1c... pingo
         Button btn2 = buttonFromIteration.GetComponent<Button>();
         
 		btn.onClick.AddListener(startCoroutineBeginning);

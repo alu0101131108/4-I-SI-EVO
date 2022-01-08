@@ -1,16 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-<<<<<<< HEAD
-/*
-enum Actions
-{
-  Explore,
-  Rest,
-  Hunt     // Chase a sheep (wolf only). This way the wolves can decide to keep chasing a sheep or stop doing it (Switching to Explore or Rest)
-}
-*/
-=======
 // enum Actions
 // {
 //   Explore,
@@ -18,7 +8,6 @@ enum Actions
 //   Hunt     // Chase a sheep (wolf only). This way the wolves can decide to keep chasing a sheep or stop doing it (Switching to Explore or Rest)
 // }
 
->>>>>>> 03b3f1c... pingo
 public class Wolf: Individual {
   Wolf() {
     // Initialization of attributes

@@ -20,12 +20,7 @@ public class SimulationData
   public float bestSheepPerception;
   public float bestSheepSize;
 
-<<<<<<< HEAD
-  void simulationData()
-  {}
-=======
   SimulationData() {}
->>>>>>> 03b3f1c... pingo
 
   public void addIndividualData(List<List<Individual>> population)
   {
@@ -51,19 +46,11 @@ public class SimulationData
     if (plantsData.Count == 0) {
       for (int i = 0; i < plants.Count; i++) {
         plantsData.Add(new List<Plant>());
-<<<<<<< HEAD
-        plantsData[plantsData.Count - 1].Add((plants[i]));
-      }
-    } else {
-      for (int i = 0; i < plants.Count; i++) {
-        plantsData[i].Add((plants[i]));
-=======
         plantsData[plantsData.Count - 1].Add(plants[i]);
       }
     } else {
       for (int i = 0; i < plants.Count; i++) {
         plantsData[i].Add(plants[i]);
->>>>>>> 03b3f1c... pingo
       }
     }
   }

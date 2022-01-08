@@ -1,16 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-<<<<<<< HEAD
-
-enum Actions
-{
-  Explore,
-  Rest,
-  Eat,      // Goes after a plant to eat it
-  Flee      // Run away from wolf (sheep only)
-}
-=======
 // enum Actions
 // {
 //   Explore,
@@ -18,7 +8,6 @@ enum Actions
 //   Eat,      // Goes after a plant to eat it
 //   Flee      // Run away from wolf (sheep only)
 // }
->>>>>>> 03b3f1c... pingo
 
 public class Sheep: Individual {
   Sheep() {
