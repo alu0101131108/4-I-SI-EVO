@@ -61,4 +61,19 @@ public static class StaticMath
     {
       return number < 0 ? number * -1 : number;
     }
+
+    public static int FindMaxValueIndex(List<float> list) {
+        if (list.Count == 0) {
+            throw new InvalidOperationException("Empty list");
+        }
+        float maxValue = float.MinValue;
+        int index;
+        for (int i = 0; i < list.Length; i++) {
+            if (list[i] > maxValue) {
+                maxValue = list[i];
+                index = i;
+            }
+        }
+        return index;
+    }
 }

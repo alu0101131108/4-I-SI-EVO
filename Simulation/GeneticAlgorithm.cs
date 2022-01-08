@@ -18,7 +18,7 @@ public class GeneticAlgorithm
 	public List<float> fitnessSum;
 
 
-	public GeneticAlgorithm(List<int> populationSize_, int elitism_ = 1, float mutationRate_ = 0.01f, int steps_ = 10)
+	public GeneticAlgorithm(List<int> populationSize_, int elitism_ = 1, float mutationRate_ = 0.01f, int steps_ = 10, int mapSize = 50)
 	{
     populationSize = populationSize_;
 		elitism = elitism_;
@@ -27,14 +27,22 @@ public class GeneticAlgorithm
 		generation = 0;
 
     // Creatures and plants initialization.
+    Random rand = new Random(Guid.NewGuid().GetHashCode());
+    float x, y;
     for (int i = 0; i < populationSize[0]; i++) {
-      population[0].Add(new Wolf());
+      x = rand.NextDouble(0, mapSize - 1);
+      y = rand.NextDouble(0, mapSize - 1);
+      population[0].Add(new Wolf(x, y));
     }
     for (int i = 0; i < populationSize[1]; i++) {
-      population[1].Add(new Sheep());
+      x = rand.NextDouble(0, mapSize - 1);
+      y = rand.NextDouble(0, mapSize - 1);
+      population[1].Add(new Sheep(x, y));
     }
     for (int i = 0; i < populationSize[2]; i++) {
-      plants.Add(new Plant());
+      x = rand.NextDouble(0, mapSize - 1);
+      y = rand.NextDouble(0, mapSize - 1);
+      plants.Add(new Plant(x, y));
     }
 	}
 
@@ -241,7 +249,7 @@ public class GeneticAlgorithm
   // Computes the observable creatures in the map from a certain position with a given range.
   public static List<List<float>> getPerceptionFrom(float x, float y, float perceptionRange) 
   {
-    int closestWolfIndex, closestSheepIndex, closestPlantIndex; 
+    int closestWolfIndex = -1, closestSheepIndex = -1, closestPlantIndex = -1; 
 
     // Closest wolf.
     float closestDistance = 100000f;
@@ -275,10 +283,16 @@ public class GeneticAlgorithm
     }
 
     // Check what happens when nothing in range.
+    float wolfX = closestWolfIndex == -1 ? perceptionRange : population[0][closestWolfIndex].xPos - x;
+    float wolfY = closestWolfIndex == -1 ? perceptionRange : population[0][closestWolfIndex].yPos - y;
+    float sheepX = closestSheepIndex == -1 ? perceptionRange : population[1][closestSheepIndex].xPos - x;
+    float sheepY = closestSheepIndex == -1 ? perceptionRange : population[1][closestSheepIndex].yPos - y;
+    float plantX = closestPlantIndex == -1 ? perceptionRange : plants[closestPlantIndex].xPos - x;
+    float plantY = closestPlantIndex == -1 ? perceptionRange : plants[closestPlantIndex].yPos - y;
 
-    wolf = new List<float> {population[0][closestWolfIndex].xPos - x, population[0][closestWolfIndex].yPos - y};
-    sheep = new List<float> {population[1][closestSheepIndex].xPos - x, population[0][closestSheepIndex].yPos - y};
-    plant = new List<float> {plants[closestPlantIndex].xPos - x, plants[closestPlantIndex].yPos - y};
+    List<float> wolf = new List<float> {wolfX, wolfY};
+    List<float> sheep = new List<float> {sheepX, sheepY};
+    List<float> plant = new List<float> {plantX, plantY};
 
     return new List<List<float>> {wolf, sheep, plant};
   }

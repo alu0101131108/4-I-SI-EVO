@@ -1,17 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public static class Const {
-
-
-  const float EATING_RANGE = 5f;                // Necessary distance to eat something.
-  const float PLANT_RESTORES = 20f;             // How much health does a plant restore when eaten.
-  const float SHEEP_RESTORES = 30f;             // How much health does a sheep restore when eaten.
-  const float ENERGY_RESTORES = 10f;            // How much energy is gained while resting.
-  const float ENERGY_LOSS_MULTIPLIER = 0.02f;    // Adjustment to the energy loss rate.
-}
 public class Individual
 {
+    public const float EATING_RANGE = 5f;                // Necessary distance to eat something.
+    public const float PLANT_RESTORES = 20f;             // How much health does a plant restore when eaten.
+    public const float SHEEP_RESTORES = 30f;             // How much health does a sheep restore when eaten.
+    public const float ENERGY_RESTORES = 10f;            // How much energy is gained while resting.
+    public const float ENERGY_LOSS_MULTIPLIER = 0.02;    // Adjustment to the energy loss rate.
+    public const float HEALTH_LOSS_RATE = 5f;
+    
     public NeuralNetwork brain;   // NN that defines behaviour by deciding actions based on inputs.
 
     public float xPos;            // X Coordinate.
@@ -27,7 +25,7 @@ public class Individual
 
     // Statistics - Brain will have these as inputs.
     public float energy;          // Movement decreases it and regenerates with time.
-    public float[] toWolf;        // Contains vector to nearest wolf. 
+    public float[] toWolf;        // Contains vector to nearest wolf.
     public float[] toSheep;       // Contains vector to nearest sheep.
     public float[] toPlant;       // Contains vector to nearest food.
 
@@ -99,6 +97,35 @@ public class Individual
     public virtual void eat();        // Goes after food within its range if there's any.
 
     // Methods related to the Genetic Algorithm.
-    public float CalculateFitness(int index);
-    public Individual Crossover(Individual otherParent);
+    public float CalculateFitness(int steps) {
+      fitness /= steps;
+      return fitness;
+    }
+
+    public Individual Crossover(Individual otherParent, float mutationPercent) {
+      float[] parentAttributes = {speed, perceptionRange, size};
+      float[] otherParentAttributes = {otherParent.speed, otherParent.perceptionRange, otherParent.size};
+      float[] childAttributes = new float[3];
+      Random rand = new Random(Guid.NewGuid().GetHashCode());
+
+      int crossingPoint = rand.Next(1, 2);
+      for (int i = 0; i < parentAttributes.Length; i++) {
+        if (i < crossingPoint) {
+          childAttributes[i] = parentAttributes[i];
+        } else {
+          childAttributes[i] = otherParentAttributes[i];
+        }
+        if (rand.NextDouble(0, 1) <= mutationPercent) {
+          childAttributes[i] *= rand.NextDouble(0.7, 1.3);
+        }
+      }
+
+      Individual child;
+      child.speed = childAttributes[0];
+      child.perceptionRange = childAttributes[1];
+      child.size = childAttributes[2];
+      child.brain = NeuralNetwork.Crossover(parent.brain, otherParent.brain, mutationPercent);
+
+      return child;
+    }
 }

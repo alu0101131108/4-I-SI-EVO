@@ -71,7 +71,6 @@ public class visualizationMaster : MonoBehaviour
     public void start(List<List<IndividualData>> population, List<List<Plant>> plants) {
         populationData = population;
         plantData = plants;
-        
     }
 
 
