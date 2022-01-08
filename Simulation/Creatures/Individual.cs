@@ -20,10 +20,13 @@ public class Individual
     public bool alive;            // Living status.
     public float energyLossRate;  // Rate at which energy will be lowered when moving.
     public float fitness;         // How fit is the individual to survive. Average health through all turns.
+    public float maxEnergy;       // The maximum energy of an individual. Calculated as size x 10.
+
+    // The fitness of the individual will be based on its health.
+    public float health;          // Always decreases, increases when eats food. Healthiest individuals will succeed in natural selection.
 
     // Statistics - Brain will have these as inputs.
     public float energy;          // Movement decreases it and regenerates with time.
-    public float health;          // Always decreases, increases when eats food. Healthiest individuals will succeed in natural selection.
     public float[] toWolf;        // Contains vector to nearest wolf. 
     public float[] toSheep;       // Contains vector to nearest sheep.
     public float[] toPlant;       // Contains vector to nearest food.
@@ -53,6 +56,9 @@ public class Individual
     // Regenerates energy while not moving.
     public void rest() {
       energy += ENERGY_RESTORES;
+      if (energy > maxEnergy) {
+        energy = maxEnergy;
+      }
     }
 
     // The animal dies.

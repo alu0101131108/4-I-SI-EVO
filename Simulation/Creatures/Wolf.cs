@@ -20,8 +20,9 @@ public class Wolf: Individual {
     perceptionRange = rand.NextDouble(perceptionRangeRange[0], perceptionRangeRange[1]);
     size = rand.NextDouble(sizeRange[0], sizeRange[1]);
 
-    health = size * 10;
-    energy = health;
+    maxEnergy = size * 10;
+    energy = maxEnergy;
+    health = maxEnergy;
     alive = true;
 
     updateEnergyLossRate();
