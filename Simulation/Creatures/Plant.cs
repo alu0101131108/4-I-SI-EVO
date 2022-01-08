@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-class Plant {
+public class Plant {
   public float xPos;            // X Coordinate.
   public float yPos;            // Y Coordinate.
   public bool alive;

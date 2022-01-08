@@ -13,7 +13,7 @@ public class visualizationMaster : MonoBehaviour
     public float moveSpeed;
     public SimulationData currentDATA;
     public List<List<IndividualData>> populationData; // [Individuals [IndividualData]]
-    public List<PlantData> plantData; 
+    public List<Plant> plantData; 
 
 
     public List<GameObject> populationSpawned; // the population that has been spawned by spawnAnimals method
@@ -68,7 +68,7 @@ public class visualizationMaster : MonoBehaviour
         */
     }
 
-    public void start(List<List<IndividualData>> population, List<Lists<Plant>> plants) {
+    public void start(List<List<IndividualData>> population, List<List<Plant>> plants) {
         populationData = population;
         plantData = plants;
         
@@ -88,7 +88,7 @@ public class visualizationMaster : MonoBehaviour
             populationSpawned.Add(animal);
         }
         for (int i = 0; i < plantData.Count(); i++) {
-            PlantData data = plantData[i][0];
+            Plant data = plantData[i][0];
             Vector3 position = new Vector3(data.xPos, data.yPos, 0);
             Instantiate(plantObject, position, Quaternion.identity);
         }
@@ -157,7 +157,7 @@ public class visualizationMaster : MonoBehaviour
     }
 
 
-    protected void rotateToPoint(transform obj, Vector3 position) { // rota el objeto hasta que mire a la posicion especificada
+    protected void rotateToPoint(Transform obj, Vector3 position) { // rota el objeto hasta que mire a la posicion especificada
         targetRotation = Quaternion.LookRotation(position - obj.position);
         // Smoothly rotate towards the target point.
         obj.rotation = Quaternion.Slerp(obj.rotation, targetRotation, turnDuration * Time.deltaTime);

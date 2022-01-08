@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 
+/*
 enum Actions
 {
   Explore,
   Rest,
   Hunt     // Chase a sheep (wolf only). This way the wolves can decide to keep chasing a sheep or stop doing it (Switching to Explore or Rest)
 }
-
+*/
 public class Wolf: Individual {
   Wolf() {
     Random rand = new Random(Guid.NewGuid().GetHashCode());

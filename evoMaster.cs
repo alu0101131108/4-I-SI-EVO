@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class evoMaster : MonoBehaviour
 {
@@ -9,8 +10,8 @@ public class evoMaster : MonoBehaviour
     public visualizationMaster IU;
     //public GeneticAlgorithm Simulation;
 
-    public button simulateFrombeginning;
-    public button simulateFromIteration;
+    public Button buttonFromBeginning;
+    public Button buttonFromIteration;
     public InputField inputIterations;
     public InputField inputGenerations;
 
@@ -28,8 +29,8 @@ public class evoMaster : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Button btn = simulateFrombeginning.GetComponent<Button>();
-        Button btn2 = simulateFromIteration.GetComponent<Button>();
+        Button btn = buttonFromBeginning.GetComponent<Button>();
+        Button btn2 = buttonFromIteration.GetComponent<Button>();
         
 		btn.onClick.AddListener(startCoroutineBeginning);
 		btn2.onClick.AddListener(startCoroutineIteration);

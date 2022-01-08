@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 
-const float EATING_RANGE = 5f;                // Necessary distance to eat something.
-const float PLANT_RESTORES = 20f;             // How much health does a plant restore when eaten.
-const float SHEEP_RESTORES = 30f;             // How much health does a sheep restore when eaten.
-const float ENERGY_RESTORES = 10f;            // How much energy is gained while resting.
-const float ENERGY_LOSS_MULTIPLIER = 0.02;    // Adjustment to the energy loss rate.
+public static class Const {
 
+
+  const float EATING_RANGE = 5f;                // Necessary distance to eat something.
+  const float PLANT_RESTORES = 20f;             // How much health does a plant restore when eaten.
+  const float SHEEP_RESTORES = 30f;             // How much health does a sheep restore when eaten.
+  const float ENERGY_RESTORES = 10f;            // How much energy is gained while resting.
+  const float ENERGY_LOSS_MULTIPLIER = 0.02f;    // Adjustment to the energy loss rate.
+}
 public class Individual
 {
     public NeuralNetwork brain;   // NN that defines behaviour by deciding actions based on inputs.
@@ -30,7 +33,7 @@ public class Individual
     public float perceptionRange;   // Sees further but increase energy usage.
     public float size;              // Increases initial health but increases energy usage.
 
-    Individual();
+    Individual() {}
     
     // Updates the vectors to the nearest sheeps, wolves and plants at current position.
     public void updatePerception() {
@@ -59,7 +62,7 @@ public class Individual
     }
 
     // The energy loss rate is updated with the current attributes.
-    public updateEnergyLossRate() {
+    public void updateEnergyLossRate() {
       energyLossRate = speed * perceptionRange * size * ENERGY_LOSS_MULTIPLIER;
     }
     
