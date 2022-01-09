@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-struct individualAndPosition {
+public struct individualAndPosition {
     public int individualID;
     public Vector3 posToMove;
 }
@@ -13,7 +13,7 @@ public class visualizationMaster : MonoBehaviour
     public float moveSpeed;
     public SimulationData currentDATA;
     public List<List<IndividualData>> populationData; // [Individuals [IndividualData]]
-    public List<Plant> plantData; 
+    public List<List<Plant>> plantData; 
 
 
     public List<GameObject> populationSpawned; // the population that has been spawned by spawnAnimals method
@@ -21,7 +21,7 @@ public class visualizationMaster : MonoBehaviour
     public int actualTurn; 
     public float turnDuration; // turn duration in seconds
 
-    public List<int> individualsWhoMove; // the individuals that need to move x turn
+    public List<individualAndPosition> individualsWhoMove; // the individuals that need to move x turn
     public GameObject wolfObject;
     public GameObject sheepObject;
     public GameObject plantObject;
@@ -75,8 +75,8 @@ public class visualizationMaster : MonoBehaviour
 
 
     public void spawnIndividual() {
-        for (int i = 0; i < populationData.Count(); i++) {
-            gameObject animal;
+        for (int i = 0; i < populationData.Count; i++) {
+            GameObject animal;
             IndividualData data = populationData[i][0];
             Vector3 position = new Vector3(data.xPos, data.yPos, 0);
             if (data.type == 0) {
@@ -86,7 +86,7 @@ public class visualizationMaster : MonoBehaviour
 
             populationSpawned.Add(animal);
         }
-        for (int i = 0; i < plantData.Count(); i++) {
+        for (int i = 0; i < plantData.Count; i++) {
             Plant data = plantData[i][0];
             Vector3 position = new Vector3(data.xPos, data.yPos, 0);
             Instantiate(plantObject, position, Quaternion.identity);
@@ -95,16 +95,16 @@ public class visualizationMaster : MonoBehaviour
 
 
     private void changeTexts(SimulationData DATA) {
-        generation.Text = DATA.generation;
-        bestWolf.Text = DATA.bestWolfFitness;
-        bestSheep.Text = DATA.bestSheepFitness;
+        generation.text = DATA.generation.ToString();
+        bestWolf.text = DATA.bestWolfFitness.ToString();
+        bestSheep.text = DATA.bestSheepFitness.ToString();
 
-        bestWolfSpeed.Text = DATA.bestWolfSpeed;
-        bestWolfPerceptionText.Text = DATA.bestWolfPerception;
-        bestWolfSizeText.Text = DATA.bestWolfSize;
-        bestSheepSpeedText.Text = DATA.bestSheepSpeed;
-        bestSheepPerceptionText.Text = DATA.bestSheepPerception;
-        bestSheepSizeText.Text = DATA.bestSheepSize;
+        bestWolfSpeedText.text = DATA.bestWolfSpeed.ToString();
+        bestWolfPerceptionText.text = DATA.bestWolfPerception.ToString();
+        bestWolfSizeText.text = DATA.bestWolfSize.ToString();
+        bestSheepSpeedText.text = DATA.bestSheepSpeed.ToString();
+        bestSheepPerceptionText.text = DATA.bestSheepPerception.ToString();
+        bestSheepSizeText.text = DATA.bestSheepSize.ToString();
     }
     public IEnumerator executeGeneration(SimulationData DATA, int maxTurns) {
 
@@ -114,7 +114,7 @@ public class visualizationMaster : MonoBehaviour
         for (int k = 0; k < maxTurns; k++) {
 
             
-            for (int i = 0; i < populationData.Count(); i++) {
+            for (int i = 0; i < populationData.Count; i++) {
                 IndividualData data = populationData[i][actualTurn];
                 if (data.alive) {
 
@@ -143,6 +143,9 @@ public class visualizationMaster : MonoBehaviour
             }
             
             while (!canAdvanceTurn) {
+                Debug.Log("trying to advance turn");
+                Debug.Log(individualsWhoMove.Count);
+                Debug.Log(waitUntilMove);
                 if (individualsWhoMove.Count > 0) {
                     moveIndividuals();
                 } else if (waitUntilMove) {
@@ -151,24 +154,28 @@ public class visualizationMaster : MonoBehaviour
                 }
             }
             actualTurn++;
+            Debug.Log("Termino turno visual");
         }
         canAdvanceGeneration = true;
+        Debug.Log("gen terminada");
+        yield return null;
+
     }
 
 
     protected void rotateToPoint(Transform obj, Vector3 position) { // rota el objeto hasta que mire a la posicion especificada
-        targetRotation = Quaternion.LookRotation(position - obj.position);
+        Quaternion targetRotation = Quaternion.LookRotation(position - obj.position);
         // Smoothly rotate towards the target point.
         obj.rotation = Quaternion.Slerp(obj.rotation, targetRotation, turnDuration * Time.deltaTime);
         
     }
     public void moveIndividuals(){
-        for (int i = 0; i < individualsWhoMove.Count(); i++) {
+        for (int i = 0; i < individualsWhoMove.Count; i++) {
             float step =  turnDuration * Time.deltaTime; // calculate distance to move
             Vector3 target = individualsWhoMove[i].posToMove;
             int id = individualsWhoMove[i].individualID;
-            if (Vector3.Distance(populationSpawned[id].transform.position, target.position) >= 0.001f) {
-                transform.position = Vector3.MoveTowards(populationSpawned[id].transform.position, target.position, step);
+            if (Vector3.Distance(populationSpawned[id].transform.position, target) >= 0.001f) {
+                transform.position = Vector3.MoveTowards(populationSpawned[id].transform.position, target, step);
             } else {
                 individualsWhoMove.RemoveAt(i);
             }

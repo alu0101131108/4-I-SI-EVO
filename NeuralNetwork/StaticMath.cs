@@ -67,8 +67,8 @@ public static class StaticMath
             throw new InvalidOperationException("Empty list");
         }
         float maxValue = float.MinValue;
-        int index;
-        for (int i = 0; i < list.Length; i++) {
+        int index = 0;
+        for (int i = 0; i < list.Count; i++) {
             if (list[i] > maxValue) {
                 maxValue = list[i];
                 index = i;

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class SimulationData
 {
@@ -20,38 +21,34 @@ public class SimulationData
   public float bestSheepPerception;
   public float bestSheepSize;
 
-  SimulationData() {}
+  public SimulationData() {}
+
+  public void initialize(List<List<Individual>> population, List<Plant> plants) {
+    populationData = new List<List<IndividualData>>();
+    plantsData = new List<List<Plant>>();
+    for (int i = 0; i < population.Count; i++) {
+      for (int j = 0; j < population[i].Count; j++) {
+        populationData.Add(new List<IndividualData>());
+      }
+    }
+    for (int i = 0; i < plants.Count; i++) {
+      plantsData.Add(new List<Plant>());
+    }
+  }
 
   public void addIndividualData(List<List<Individual>> population)
   {
-    if (populationData.Count == 0) {
-      for (int i = 0; i < population.Count; i++) {
-        for (int j = 0; j < population[i].Count; j++) {
-          populationData.Add(new List<IndividualData>());
-          populationData[populationData.Count - 1].Add(new IndividualData(population[i][j]));
-        }
-      }
-    }
-    else {
-      for (int i = 0; i < population.Count; i++) {
-        for (int j = 0; j < population[i].Count; j++) {
-          populationData[i * population[0].Count + j].Add(new IndividualData(population[i][j])); // esto solo funciona con dos especies
-        }
+    for (int i = 0; i < population.Count; i++) {
+      for (int j = 0; j < population[i].Count; j++) {
+        populationData[i * population[0].Count + j].Add(new IndividualData(population[i][j], i));
       }
     }
   }
 
   public void addPlantData(List<Plant> plants)
   {
-    if (plantsData.Count == 0) {
-      for (int i = 0; i < plants.Count; i++) {
-        plantsData.Add(new List<Plant>());
-        plantsData[plantsData.Count - 1].Add(plants[i]);
-      }
-    } else {
-      for (int i = 0; i < plants.Count; i++) {
-        plantsData[i].Add(plants[i]);
-      }
+    for (int i = 0; i < plants.Count; i++) {
+      plantsData[i].Add(new Plant(plants[i]));
     }
   }
 }
@@ -70,7 +67,7 @@ public class SimulationData
   //   w3 : [t1, t2, t3, ...] 0 * 4 + 2 = 2
   //   w4 : [t1, t2, t3, ...] 0 * 4 + 3 = 3
   //   s1 : [t1, t2, t3, ...] 1 * 4 + 0 = 4
-  //   s2 : [t1, t2, t3, ...] 1 * 4 + 1 5
+  //   s2 : [t1, t2, t3, ...] 1 * 4 + 1 = 5
   //   s3 : [t1, t2, t3, ...]
   // ]
 

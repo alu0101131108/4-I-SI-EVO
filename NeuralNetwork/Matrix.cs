@@ -1,5 +1,5 @@
 ﻿using System;
-
+[System.Serializable]
 // very simple naive matrix math, nothing fancy
 public class Matrix
 {

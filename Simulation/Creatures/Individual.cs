@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
-
+using UnityEngine;
+[System.Serializable]
 public class Individual
 {
     public const float EATING_RANGE = 5f;                // Necessary distance to eat something.
     public const float PLANT_RESTORES = 20f;             // How much health does a plant restore when eaten.
     public const float SHEEP_RESTORES = 30f;             // How much health does a sheep restore when eaten.
     public const float ENERGY_RESTORES = 10f;            // How much energy is gained while resting.
-    public const float ENERGY_LOSS_MULTIPLIER = 0.02;    // Adjustment to the energy loss rate.
+    public const float ENERGY_LOSS_MULTIPLIER = 0.02f;    // Adjustment to the energy loss rate.
     public const float HEALTH_LOSS_RATE = 5f;
     
     public NeuralNetwork brain;   // NN that defines behaviour by deciding actions based on inputs.
@@ -25,16 +26,20 @@ public class Individual
 
     // Statistics - Brain will have these as inputs.
     public float energy;          // Movement decreases it and regenerates with time.
-    public float[] toWolf;        // Contains vector to nearest wolf.
-    public float[] toSheep;       // Contains vector to nearest sheep.
-    public float[] toPlant;       // Contains vector to nearest food.
+    public List<float> toWolf;        // Contains vector to nearest wolf.
+    public List<float> toSheep;       // Contains vector to nearest sheep.
+    public List<float> toPlant;       // Contains vector to nearest food.
 
     // Attributes - Performance of actions depend on these.
     public float speed;             // Moves faster but increase energy usage.
     public float perceptionRange;   // Sees further but increase energy usage.
     public float size;              // Increases initial health but increases energy usage.
 
-    Individual() {}
+    public Individual() {
+      toWolf = new List<float> {0f, 0f};
+      toSheep = new List<float> {0f, 0f};
+      toPlant = new List<float> {0f, 0f};
+  }
     
     // Updates the vectors to the nearest sheeps, wolves and plants at current position.
     public void updatePerception() {
@@ -45,10 +50,9 @@ public class Individual
     }
     
     // Walks to a random position inside its range.
-    public void explore() {           
-      Random rand = new Random(Guid.NewGuid().GetHashCode());
-      moveTowards(rand.Next(xPos - perceptionRange, xPos + perceptionRange),
-                  rand.Next(yPos - perceptionRange, yPos + perceptionRange));
+    public void explore() {
+      moveTowards(Random.Range(xPos - perceptionRange, xPos + perceptionRange),
+                  Random.Range(yPos - perceptionRange, yPos + perceptionRange));
     }
 
     // Regenerates energy while not moving.
@@ -78,7 +82,7 @@ public class Individual
         float diffY = y - yPos;
 
         // The module of the previous vector
-        float modVector = Math.Sqrt(Math.Pow(diffX, 2) + Math.Pow(diffY, 2));
+        float modVector = Mathf.Sqrt(Mathf.Pow(diffX, 2) + Mathf.Pow(diffY, 2));
 
         // The two components of the unit vector of the previous vector.
         float unitVectorX = diffX / modVector;
@@ -86,46 +90,31 @@ public class Individual
 
         // Moving in the specified direction according to the individual's speed
         // Using Math.Min just in case the movement surpasses the specified point
-        xPos += Math.Min(speed * unitVectorX, diffX);
-        yPos += Math.Min(speed * unitVectorY, diffY);
+        xPos += Mathf.Min(speed * unitVectorX, diffX);
+        yPos += Mathf.Min(speed * unitVectorY, diffY);
         energy -= energyLossRate;
       }
     }
 
+    public void restart() {
+      alive = true;
+      health = maxEnergy;
+      energy = maxEnergy;
+      xPos = Random.Range(0f, GeneticAlgorithm.mapSize);
+      yPos = Random.Range(0f, GeneticAlgorithm.mapSize);
+    }
+
     // Virtual methods. Sheep and Wolf will each contain its own definition of these.
-    public virtual void actuate();    // First think, then do action.
-    public virtual void eat();        // Goes after food within its range if there's any.
+    public virtual void actuate() {}          // First think, then do action.
+    public virtual void eat() {}              // Goes after food within its range if there's any.
+    public virtual Individual Crossover(Individual otherParent, float mutationPercent) {
+      Debug.Log("Esto no se deberia ejecutar aqui");
+      return otherParent;
+    } // Creates a child.
 
     // Methods related to the Genetic Algorithm.
     public float CalculateFitness(int steps) {
       fitness /= steps;
       return fitness;
-    }
-
-    public Individual Crossover(Individual otherParent, float mutationPercent) {
-      float[] parentAttributes = {speed, perceptionRange, size};
-      float[] otherParentAttributes = {otherParent.speed, otherParent.perceptionRange, otherParent.size};
-      float[] childAttributes = new float[3];
-      Random rand = new Random(Guid.NewGuid().GetHashCode());
-
-      int crossingPoint = rand.Next(1, 2);
-      for (int i = 0; i < parentAttributes.Length; i++) {
-        if (i < crossingPoint) {
-          childAttributes[i] = parentAttributes[i];
-        } else {
-          childAttributes[i] = otherParentAttributes[i];
-        }
-        if (rand.NextDouble(0, 1) <= mutationPercent) {
-          childAttributes[i] *= rand.NextDouble(0.7, 1.3);
-        }
-      }
-
-      Individual child;
-      child.speed = childAttributes[0];
-      child.perceptionRange = childAttributes[1];
-      child.size = childAttributes[2];
-      child.brain = NeuralNetwork.Crossover(parent.brain, otherParent.brain, mutationPercent);
-
-      return child;
     }
 }

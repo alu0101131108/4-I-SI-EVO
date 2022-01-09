@@ -6,13 +6,19 @@ public class Plant {
   public float yPos;            // Y Coordinate.
   public bool alive;
 
-  Plant(float x, float y) {
+  public Plant(float x, float y) {
     xPos = x;
     yPos = y;
     alive = true;
   }
 
-  public void remove() {
+  public Plant(Plant clonable) {
+    xPos = clonable.xPos;
+    yPos = clonable.yPos;
+    alive = clonable.alive;
+  }
+
+  public void die() {
     alive = false;
   }
 }

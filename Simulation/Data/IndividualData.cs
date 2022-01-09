@@ -3,36 +3,44 @@ using System.Collections.Generic;
 
 public class IndividualData
 {
-    public int type;              
-    public int xPos;             
-    public int yPos;              
-    public int action;            
-    public bool alive;            
+  public int type;              
+  public float xPos;             
+  public float yPos;              
+  public int action;            
+  public bool alive;            
 
-    // Statistics
-    public float energy;          
-    public float health;         
-    public float[] perception;     
+  // Statistics
+  public float energy;          
+  public float health;
 
-    // Attributes
-    public int speed;             
-    public int perceptionRange;   
-    public int size;
-    public float initialHealth;              
+  // Attributes
+  public float speed;             
+  public float perceptionRange;   
+  public int size;
+  public float maxEnergy;              
 
-    IndividualData(Individual target)
-    {
-      this.type = target.type;
-      this.xPos = target.xPos;
-      this.yPos = target.yPos;
-      this.action = target.action;
-      this.alive = target.alive;
-      this.energy = target.energy;
-      this.health = target.health;
-      this.perception = target.perception;
-      this.speed = target.speed;
-      this.perceptionRange = target.perceptionRange;
-      this.size = size;
-      this.initialHealth = target.initialHealth;
-    }
+  // Perception
+  public List<float> toWolf;
+  public List<float> toSheep;
+  public List<float> toPlant;
+
+  public IndividualData(Individual target, int type_)
+  {
+    type = type_;
+    xPos = target.xPos;
+    yPos = target.yPos;
+    action = target.action;
+    alive = target.alive;
+    energy = target.energy;
+    health = target.health;
+
+    toWolf = new List<float> {target.toWolf[0], target.toWolf[1]};
+    toSheep = new List<float> {target.toSheep[0], target.toSheep[1]};
+    toPlant = new List<float> {target.toPlant[0], target.toPlant[1]};
+
+    speed = target.speed;
+    perceptionRange = target.perceptionRange;
+    size = size;
+    maxEnergy = target.maxEnergy;
+  }
 }
